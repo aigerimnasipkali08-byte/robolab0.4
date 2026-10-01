@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#14151b"/>
+      <stop offset="55%" stop-color="#181920"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <circle cx="180" cy="110" r="220" fill="#f97316" fill-opacity="0.08"/>
+  <circle cx="1020" cy="510" r="260" fill="#22d3ee" fill-opacity="0.08"/>
+  <!-- Логотип RoboLab -->
+  <g transform="translate(90, 120) scale(3.2)">
+    <path d="M2 15H8M2 21H8M2 27H8M32 15H38M32 21H38M32 27H38" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+    <path d="M20 9V4" stroke="#22d3ee" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="20" cy="3.5" r="2.6" fill="#f97316"/>
+    <rect x="8" y="9" width="24" height="22" rx="6" fill="#161923" stroke="#22d3ee" stroke-width="2.2"/>
+    <rect x="12" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+    <rect x="22.5" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+    <path d="M14.5 25.5H17.5L19 27H21L22.5 25.5H25.5" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="245" y="185" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="68">RoboLab</text>
+  <text x="245" y="230" fill="#22d3ee" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="24">ВИРТУАЛЬНАЯ STEM-ЛАБОРАТОРИЯ СХЕМОТЕХНИКИ И РОБОТОТЕХНИКИ</text>
+  <text x="90" y="330" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="38">Arduino Uno · Nano · Mega · ESP32 · Raspberry Pi Pico</text>
+  <text x="90" y="385" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="26">Реалистичная сборка схем, код C++ и встроенный AI Наставник 24/7 для школ без дорогого оборудования</text>
+  <rect x="90" y="455" width="380" height="64" rx="14" fill="url(#accentGrad)"/>
+  <text x="280" y="495" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="24">▶ Открыть симулятор в браузере</text>
+</svg>

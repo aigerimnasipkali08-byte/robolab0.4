@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboLab — Фокусная презентация (6 слайдов в PNG 1920×1080)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #0ea5e9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px 24px 64px;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    }
+    .title-wrap h1 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .title-wrap p {
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .btn.primary {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+    .btn.primary:hover { background: #0284c7; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+    }
+    .slide-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .slide-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .slide-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .slide-res {
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="title-wrap">
+        <h1>🖼️ RoboLab — Фокусная презентация (6 ключевых слайдов)</h1>
+        <p>1-в-1 по эталонному шаблону PDF • Вся суть за 4 минуты питча • Доступны в PDF и PNG</p>
+      </div>
+      <div class="actions">
+        <a href="../robolab-pitch-deck.pdf" download="robolab-pitch-deck.pdf" class="btn primary">📄 Скачать PDF-документ</a>
+        <a href="./robolab-pitch-deck-png.zip" download="robolab-pitch-deck-png.zip" class="btn">📦 Скачать 6 PNG (ZIP)</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="slide-card">
+        <a href="./slide-01-title.png" target="_blank"><img src="./slide-01-title.png" alt="Слайд 1" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">01. Title (Dark Theme)</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-01-title.png" download="slide-01-title.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <a href="./slide-02-problem.png" target="_blank"><img src="./slide-02-problem.png" alt="Слайд 2" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">02. Проблема (15/15 баллов)</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-02-problem.png" download="slide-02-problem.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <a href="./slide-03-solution.png" target="_blank"><img src="./slide-03-solution.png" alt="Слайд 3" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">03. Решение &amp; AI (20/20 &amp; 10/10)</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-03-solution.png" download="slide-03-solution.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <a href="./slide-04-features.png" target="_blank"><img src="./slide-04-features.png" alt="Слайд 4" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">04. Архитектура &amp; Ценность</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-04-features.png" download="slide-04-features.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <a href="./slide-05-technology.png" target="_blank"><img src="./slide-05-technology.png" alt="Слайд 5" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">05. Сценарий 3 мин (01-04)</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-05-technology.png" download="slide-05-technology.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+
+      <div class="slide-card">
+        <a href="./slide-06-outro.png" target="_blank"><img src="./slide-06-outro.png" alt="Слайд 6" /></a>
+        <div class="slide-meta">
+          <div>
+            <div class="slide-name">06. 100% Кейс №3 &amp; Outro</div>
+            <div class="slide-res">1920×1080 PNG</div>
+          </div>
+          <a href="./slide-06-outro.png" download="slide-06-outro.png" class="btn">⬇ Скачать</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

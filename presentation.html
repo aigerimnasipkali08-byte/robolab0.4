@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboLab — Питч-презентация (6 слайдов) | WIT Teens Challenge 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #f4f6f9;
+      --bg-slide: #ffffff;
+      --bg-dark: #0b132b;
+      --bg-dark-card: #141f38;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --accent-blue: #0ea5e9;
+      --accent-orange: #f97316;
+      --accent-green: #10b981;
+      --accent-purple: #6366f1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-canvas);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Верхняя навигационная панель */
+    .deck-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .deck-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .deck-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ui {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border-light);
+      background: #ffffff;
+      color: var(--text-dark);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-ui:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .btn-ui.primary {
+      background: var(--text-dark);
+      color: #ffffff;
+      border-color: var(--text-dark);
+    }
+
+    .btn-ui.primary:hover {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    .timer-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+      cursor: pointer;
+    }
+
+    /* Контейнер слайда */
+    .deck-viewport {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .slide {
+      display: none;
+      background: var(--bg-slide);
+      border: 1px solid var(--border-light);
+      border-radius: 24px;
+      padding: 52px 64px;
+      min-height: 580px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.04);
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: flex;
+      animation: fadeSlide 0.2s ease-out;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Темные слайды (Cover & Outro — 1-в-1 как в PDF) */
+    .slide.dark-theme {
+      background: var(--bg-dark);
+      color: #ffffff;
+      border-color: #1b2640;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .slide-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    /* Бейдж критериев 1-в-1 как в PDF */
+    .badge-criterion {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 6px 16px;
+      border-radius: 99px;
+      display: inline-block;
+    }
+
+    .dark-theme .badge-criterion {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-orange);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+    }
+
+    /* Главные заголовки 1-в-1 */
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .dark-theme .slide-title {
+      color: #ffffff;
+    }
+
+    /* Сетки */
+    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    /* Карточки */
+    .card-clean {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .icon-orange { background: #fff7ed; color: var(--accent-orange); }
+    .icon-blue { background: #f0f9ff; color: var(--accent-blue); }
+    .icon-green { background: #ecfdf5; color: var(--accent-green); }
+
+    .card-h { font-size: 18px; font-weight: 800; color: var(--text-dark); }
+    .card-p { font-size: 14px; line-height: 1.5; color: var(--text-muted); }
+
+    /* Карточки с индикатором */
+    .indicator-item {
+      background: #f8fafc;
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 4px 14px 14px 4px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+    .indicator-item.orange { border-left-color: var(--accent-orange); }
+    .indicator-item.green { border-left-color: var(--accent-green); }
+
+    /* 4 крупный шаг (01, 02, 03, 04) */
+    .step-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 28px 24px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .big-num-pdf {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .num-blue { color: var(--accent-blue); }
+    .num-orange { color: var(--accent-orange); }
+    .num-green { color: var(--accent-green); }
+    .num-purple { color: var(--accent-purple); }
+
+    /* Окно кода C++ */
+    .code-box-pdf {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 22px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      color: #e2e8f0;
+    }
+    .mac-dots { display: flex; gap: 6px; margin-bottom: 16px; }
+    .mac-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    /* Чекмарки */
+    .check-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #10b981;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .slide-foot {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .dark-theme .slide-foot {
+      border-top-color: #1e293b;
+      color: #64748b;
+    }
+
+    /* Фокус спикера */
+    .speaker-focus-bar {
+      background: #ffffff;
+      border: 1.5px solid #c7d2fe;
+      border-left: 5px solid var(--accent-purple);
+      border-radius: 16px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .speaker-focus-bar.hidden { display: none; }
+    .speaker-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-purple); margin-bottom: 3px; }
+    .speaker-quote { font-size: 14px; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+
+    .dots-row { display: flex; justify-content: center; gap: 8px; }
+    .dot { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border-light); background: #ffffff; font-size: 11.5px; font-weight: 700; color: var(--text-muted); cursor: pointer; }
+    .dot.active { background: var(--text-dark); color: #ffffff; border-color: var(--text-dark); }
+
+    /* Полноэкранный 16:9 режим для рендера PNG и сохранения в PDF */
+    @media print {
+      @page {
+        size: 1920px 1080px;
+        margin: 0;
+      }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        background: #f4f6f9 !important;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .deck-bar, .speaker-focus-bar, .dots-row { display: none !important; }
+      .deck-viewport {
+        max-width: 1920px !important;
+        width: 1920px !important;
+        height: 1080px !important;
+        padding: 40px 56px !important;
+        margin: 0 !important;
+      }
+      .slide {
+        display: flex !important;
+        width: 1808px !important;
+        height: 1000px !important;
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none !important;
+        border-radius: 28px !important;
+      }
+    }
+
+    body.export-png {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #f4f6f9;
+      justify-content: center;
+      align-items: center;
+      padding: 36px 48px;
+    }
+
+    body.export-png .deck-bar,
+    body.export-png .dots-row,
+    body.export-png .speaker-focus-bar {
+      display: none !important;
+    }
+
+    body.export-png .deck-viewport {
+      max-width: 1824px;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+    }
+
+    body.export-png .slide.active {
+      flex: 1;
+      height: 100%;
+      padding: 56px 76px;
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+      animation: none !important;
+    }
+
+    /* Окно веб-камеры и телесуфлёра (100% отбражение) */
+    .cam-prompter-modal {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      width: 420px;
+      background: #090d16;
+      border: 2px solid #0ea5e9;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .cam-prompter-modal.hidden {
+      display: none !important;
+    }
+
+    .cam-prompter-header {
+      background: #0f172a;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1e293b;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .cam-rec-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+      display: inline-block;
+      margin-right: 6px;
+      animation: blinkRec 1.2s infinite;
+    }
+
+    @keyframes blinkRec {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .cam-video-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cam-video-element {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* 100% Зеркальное отражение */
+    }
+
+    .cam-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #94a3b8;
+      font-size: 13px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cam-prompt-box {
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid #1e293b;
+      padding: 16px;
+      color: #38bdf8;
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.45;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .cam-prompt-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="deck-bar">
+    <div class="deck-brand">
+      <a href="./index.html" class="btn-ui">← В симулятор RoboLab</a>
+      <span>RoboLab</span>
+      <span style="font-size:11px; font-weight:700; color:#f97316; background:#fff7ed; padding:3px 10px; border-radius:99px; border:1px solid #ffedd5;">
+        Кейс №3: STEM без сложного оборудования
+      </span>
+    </div>
+
+    <div class="deck-actions">
+      <div class="timer-pill" id="timerBtn" title="Запустить / сбросить таймер 04:00">
+        ⏱ <span id="timerText">04:00</span>
+      </div>
+      <button type="button" class="btn-ui" id="toggleCamBtn" style="background:#0ea5e9; color:#ffffff; border-color:#0ea5e9;">📹 Камера-Суфлёр (100%)</button>
+      <button type="button" class="btn-ui" id="toggleNoteBtn">🎙️ Фокус спикера: ВКЛ</button>
+      <button type="button" class="btn-ui" id="prevBtn">←</button>
+      <span id="counterText" style="font-size:12.5px; font-weight:700; padding:0 6px;">1 / 6</span>
+      <button type="button" class="btn-ui" id="nextBtn">→</button>
+      <a href="./slides-png/index.html" class="btn-ui" title="Открыть 6 слайдов в формате PNG">🖼️ Слайды PNG (6 шт.)</a>
+      <a href="./robolab-pitch-deck.pdf" download="robolab-pitch-deck.pdf" class="btn-ui primary">📄 Скачать PDF</a>
+    </div>
+  </header>
+
+  <main class="deck-viewport">
+
+    <!-- SLIDE 1: TITLE (DARK THEME) -->
+    <section class="slide dark-theme active" data-focus="«Мы — команда 1 Marie Curie. Представляем RoboLab — виртуальную STEM-лабораторию схемотехники и программирования в браузере».">
+      <div>
+        <div class="slide-top">
+          <span style="font-size:13px; font-weight:600; color:#94a3b8;">Команда: 1 Marie Curie</span>
+          <span class="badge-criterion">Кейс №3: STEM без сложного оборудования</span>
+        </div>
+
+        <div style="margin-top:36px; margin-bottom:48px;">
+          <h1 style="font-size:72px; font-weight:800; color:#ffffff; line-height:1; margin-bottom:14px; letter-spacing:-0.03em;">
+            RoboLab
+          </h1>
+          <p style="font-size:24px; font-weight:600; color:#38bdf8; max-width:900px; line-height:1.35;">
+            Виртуальная STEM-лаборатория схемотехники и программирования в браузере
+          </p>
+        </div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:32px;" class="cols-2">
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; margin-bottom:6px;">
+              ФОРМАТ РЕШЕНИЯ
+            </div>
+            <div style="font-size:20px; font-weight:800; color:#ffffff;">
+              Browser Simulation &amp; AI Assistant
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; margin-bottom:6px;">
+              ЦЕЛЕВАЯ АУДИТОРИЯ
+            </div>
+            <div style="font-size:20px; font-weight:800; color:#ffffff;">
+              Школы, ученики и STEM-педагоги
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>RoboLab • STEM без сложного оборудования</span>
+        <span>Слайд 1 из 6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: PROBLEM (15/15 БАЛЛОВ) -->
+    <section class="slide" data-focus="«Три главных барьера: высокая стоимость наборов ($15k+), страх сжечь деталь и сухая теория по учебникам».">
+      <div>
+        <div class="slide-top">
+          <span class="badge-criterion">КРИТЕРИЙ: ПОНИМАНИЕ ПРОБЛЕМЫ (15/15 БАЛЛОВ)</span>
+          <span style="font-size:12px; font-weight:700; color:#94a3b8;">Слайд 2 / 6</span>
+        </div>
+
+        <h1 class="slide-title">
+          Проблема: теоретическое обучение без доступа к железу
+        </h1>
+
+        <div class="cols-3">
+          <div class="card-clean">
+            <div class="card-icon-wrap icon-orange">⚙️</div>
+            <div class="card-h">Барьер оборудования</div>
+            <div class="card-p">Высокая стоимость плат, датчиков и осциллографов для региональных школ.</div>
+          </div>
+
+          <div class="card-clean">
+            <div class="card-icon-wrap icon-orange">⚠️</div>
+            <div class="card-h">Страх ошибки</div>
+            <div class="card-p">Боязнь сжечь дорогие контроллеры при коротком замыкании цепей.</div>
+          </div>
+
+          <div class="card-clean">
+            <div class="card-icon-wrap icon-blue">📘</div>
+            <div class="card-h">Сухая теория</div>
+            <div class="card-p">Изучение физики и алгоритмов по учебникам без реальной практики.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>Проблема: Недоступность оборудования для 73% школ</span>
+        <span>Слайд 2 из 6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: SOLUTION & INNOVATION (20/20 & 10/10 БАЛЛОВ) -->
+    <section class="slide" data-focus="«RoboLab предлагает полный цикл C/C++ разработки в браузере — с 5 контроллерами, 10+ датчиками и AI-наставником».">
+      <div>
+        <div class="slide-top">
+          <span class="badge-criterion">КРИТЕРИИ: КАЧЕСТВО РЕШЕНИЯ (20/20) | НОВИЗНА И AI (10/10)</span>
+          <span style="font-size:12px; font-weight:700; color:#94a3b8;">Слайд 3 / 6</span>
+        </div>
+
+        <h1 class="slide-title">
+          Решение: Эмулятор электроники + AI-наставник
+        </h1>
+
+        <div class="cols-2">
+          <div>
+            <div class="indicator-item">
+              <div class="card-h" style="font-size:16px;">Полный цикл C/C++ разработки</div>
+              <div class="card-p" style="font-size:13.5px;">Сборка схем проводами и написание реального кода с отладкой.</div>
+            </div>
+
+            <div class="indicator-item orange">
+              <div class="card-h" style="font-size:16px;">Богатый каталог компонентов</div>
+              <div class="card-p" style="font-size:13.5px;">5 контроллеров (Arduino, ESP32, Pico) и 10+ датчиков и экранов.</div>
+            </div>
+
+            <div class="indicator-item green">
+              <div class="card-h" style="font-size:16px;">AI-наставник и режим «Тест ошибки»</div>
+              <div class="card-p" style="font-size:13.5px;">Разбор сбоев 24/7 и безопасное моделирование замыканий.</div>
+            </div>
+          </div>
+
+          <div style="border:1px solid var(--border-light); border-radius:16px; padding:16px; background:#f8fafc; text-align:center;">
+            <img src="./assets/robolab_stem_impact.jpg" alt="Интерактивный симулятор" style="width:100%; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.06);" />
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>Решение: Интерактивный эмулятор компонентов и AI-ментор</span>
+        <span>Слайд 3 из 6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: VALUE & ARCHITECTURE (15/15 & 10/10 БАЛЛОВ) -->
+    <section class="slide" data-focus="«Архитектура эмулирует сигналы на частоте 16 МГц, давая ученикам свободу опытов, а учителям — 0₸ затрат».">
+      <div>
+        <div class="slide-top">
+          <span class="badge-criterion">КРИТЕРИИ: ПОЛЬЗОВАТЕЛЬСКАЯ ЦЕННОСТЬ (15/15) | ТЕХНОЛОГИИ (10/10)</span>
+          <span style="font-size:12px; font-weight:700; color:#94a3b8;">Слайд 4 / 6</span>
+        </div>
+
+        <h1 class="slide-title">
+          Высокопроизводительная архитектура &amp; Ценность
+        </h1>
+
+        <div class="cols-2">
+          <div>
+            <div class="card-clean" style="border-top:3px solid var(--accent-blue); margin-bottom:14px; padding:18px;">
+              <div style="font-size:16px; font-weight:800; color:var(--accent-blue); margin-bottom:6px;">
+                🎓 Для учеников
+              </div>
+              <div class="card-p" style="font-size:13px;">Свобода пробовать и ошибаться 24/7 с любого ПК без установки.</div>
+            </div>
+
+            <div class="card-clean" style="border-top:3px solid var(--accent-orange); margin-bottom:14px; padding:18px;">
+              <div style="font-size:16px; font-weight:800; color:var(--accent-orange); margin-bottom:6px;">
+                👨‍🏫 Для преподавателей
+              </div>
+              <div class="card-p" style="font-size:13px;">Готовые практикумы и нулевой бюджет на закупку деталей.</div>
+            </div>
+
+            <div class="card-clean" style="border-top:3px solid #10b981; padding:18px;">
+              <div style="font-size:16px; font-weight:800; color:#10b981; margin-bottom:6px;">
+                ⚡ Web3 &amp; Блокчейн (Polygon)
+              </div>
+              <div class="card-p" style="font-size:13px;">Soulbound NFT (SBT) дипломы, смарт-контракты IoT и награды $ROBO.</div>
+            </div>
+          </div>
+
+          <div class="code-box-pdf">
+            <div class="mac-dots">
+              <div class="mac-dot dot-red"></div>
+              <div class="mac-dot dot-yellow"></div>
+              <div class="mac-dot dot-green"></div>
+            </div>
+            <pre><code><span style="color:#64748b;">// RoboLab Core Loop &amp; Web3 Telemetry</span>
+<span style="color:#f472b6; font-weight:700;">void</span> <span style="color:#38bdf8; font-weight:700;">loop</span>() {
+  <span style="color:#f472b6; font-weight:700;">int</span> val = <span style="color:#38bdf8; font-weight:700;">analogRead</span>(A0);
+  <span style="color:#38bdf8; font-weight:700;">digitalWrite</span>(<span style="color:#fbbf24;">13</span>, val > <span style="color:#fbbf24;">500</span>);
+
+  <span style="color:#38bdf8; font-weight:700;">aiInspectCircuit</span>(A0, pin13State);
+  <span style="color:#10b981; font-weight:700;">RoboLabWeb3</span>.<span style="color:#38bdf8; font-weight:700;">mintProof</span>(<span style="color:#a7f3d0;">"ARD-882"</span>);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>Архитектура: React, SVG Engine, C++ AST Emulator, Polygon Amoy Web3</span>
+        <span>Слайд 4 из 6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: WORKFLOW 3 MIN (10/10 БАЛЛОВ) -->
+    <section class="slide" data-focus="«Сценарий работы от идеи до устройства за 3 минуты: 01 Выбор платы, 02 Загрузка скетча, 03 Симуляция, 04 AI-наставник».">
+      <div>
+        <div class="slide-top">
+          <span class="badge-criterion">КРИТЕРИЙ: ПРЕЗЕНТАЦИЯ И ДЕМО (10/10 БАЛЛОВ)</span>
+          <span style="font-size:12px; font-weight:700; color:#94a3b8;">Слайд 5 / 6</span>
+        </div>
+
+        <h1 class="slide-title">
+          Сценарий работы: от идеи до устройства за 3 минуты
+        </h1>
+
+        <div class="cols-4">
+          <div class="step-box">
+            <div class="big-num-pdf num-blue">01</div>
+            <div>
+              <div class="card-h" style="font-size:16px; margin-bottom:6px;">Выбор платы</div>
+              <div class="card-p" style="font-size:13px;">Arduino Uno R3 и дисплей LCD1602 I2C.</div>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div class="big-num-pdf num-orange">02</div>
+            <div>
+              <div class="card-h" style="font-size:16px; margin-bottom:6px;">Загрузка скетча</div>
+              <div class="card-p" style="font-size:13px;">Готовый шаблон из «Практикума».</div>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div class="big-num-pdf num-green">03</div>
+            <div>
+              <div class="card-h" style="font-size:16px; margin-bottom:6px;">Запуск симуляции</div>
+              <div class="card-p" style="font-size:13px;">Интерактивный отклик элементов цепи.</div>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div class="big-num-pdf num-purple">04</div>
+            <div>
+              <div class="card-h" style="font-size:16px; margin-bottom:6px;">AI-наставник</div>
+              <div class="card-p" style="font-size:13px;">Пошаговый разбор ошибок в коде.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>Сценарий: 4 простых шага для урока</span>
+        <span>Слайд 5 из 6</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: CASE MATCH & OUTRO (DARK THEME) -->
+    <section class="slide dark-theme" data-focus="«100% попадание в требования кейса №3! Приглашаем протестировать демо-версию RoboLab прямо сейчас».">
+      <div>
+        <div class="slide-top">
+          <span style="font-size:12px; font-weight:800; color:var(--accent-orange); letter-spacing:0.08em;">
+            КОМАНДА: 1 MARIE CURIE
+          </span>
+          <span class="badge-criterion">КРИТЕРИЙ: СООТВЕТСТВИЕ КЕЙСУ №3 (5/5 БАЛЛОВ)</span>
+        </div>
+
+        <div style="text-align:center; margin:28px 0;">
+          <h1 style="font-size:46px; font-weight:800; color:#ffffff; margin-bottom:12px; letter-spacing:-0.02em;">
+            Делаем STEM-образование доступным каждому!
+          </h1>
+          <p style="font-size:17px; color:#94a3b8; max-width:760px; margin:0 auto; line-height:1.45;">
+            Открываем двери в инженерию для каждого ребенка, независимо от региона и оснащения школы.
+          </p>
+        </div>
+
+        <div style="background:var(--bg-dark-card); border:1px solid #1e293b; border-radius:18px; padding:22px 36px; display:flex; align-items:center; justify-content:space-around; flex-wrap:wrap; gap:20px;">
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; margin-bottom:4px;">
+              ДЕМО-ВЕРСИЯ
+            </div>
+            <div style="font-size:20px; font-weight:800; color:#38bdf8;">
+              robolab-stem.web.app
+            </div>
+          </div>
+
+          <div style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
+
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; margin-bottom:4px;">
+              КОНТАКТЫ
+            </div>
+            <div style="font-size:20px; font-weight:800; color:#ffffff;">
+              team@mariecurie.dev
+            </div>
+          </div>
+
+          <a href="./index.html" class="btn-ui primary" style="padding:12px 24px; font-size:14px; background:var(--accent-blue); border-color:var(--accent-blue);">
+            ▶ Запустить Live Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="slide-foot">
+        <span>Спасибо за внимание! • Готовы к вопросам жюри (2 мин Q&amp;A)</span>
+        <span>Слайд 6 из 6</span>
+      </div>
+    </section>
+
+    <!-- 10-секундный фокус для спикера -->
+    <aside class="speaker-focus-bar" id="speakerBar">
+      <div>
+        <div class="speaker-label">🎙️ Главный тезис спикера (сказать голосом за 10 секунд):</div>
+        <div class="speaker-quote" id="speakerQuote"></div>
+      </div>
+    </aside>
+
+    <nav class="dots-row" id="dotsRow"></nav>
+
+  </main>
+
+  <!-- Виджет Веб-камеры (100% Зеркало) и Наводящего Телесуфлёра -->
+  <div class="cam-prompter-modal hidden" id="camPrompterModal">
+    <div class="cam-prompter-header">
+      <div>
+        <span class="cam-rec-dot"></span>
+        <span>ОТРАЖЕНИЕ СПИКЕРА 100% (ПРАКТИКА ПИТЧА)</span>
+      </div>
+      <button type="button" id="closeCamBtn" style="background:transparent; border:none; color:#94a3b8; font-size:16px; cursor:pointer;">✕</button>
+    </div>
+
+    <div class="cam-video-container">
+      <video id="camVideo" class="cam-video-element" autoplay muted playsinline></video>
+      <div id="camPlaceholder" class="cam-placeholder">
+        <span style="font-size:32px;">📷</span>
+        <span>Включение трансляции камеры (100%)...</span>
+        <span style="font-size:11px; opacity:0.7;">Разрешите доступ к веб-камере в браузере</span>
+      </div>
+    </div>
+
+    <div class="cam-prompt-box">
+      <div class="cam-prompt-label">🎙️ Наводящие подсказки (Телесуфлёр):</div>
+      <div id="camPromptText"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counterText = document.getElementById("counterText");
+      const speakerQuote = document.getElementById("speakerQuote");
+      const speakerBar = document.getElementById("speakerBar");
+      const dotsRow = document.getElementById("dotsRow");
+      const toggleNoteBtn = document.getElementById("toggleNoteBtn");
+      const toggleCamBtn = document.getElementById("toggleCamBtn");
+      const camPrompterModal = document.getElementById("camPrompterModal");
+      const closeCamBtn = document.getElementById("closeCamBtn");
+      const camVideo = document.getElementById("camVideo");
+      const camPlaceholder = document.getElementById("camPlaceholder");
+      const camPromptText = document.getElementById("camPromptText");
+      const timerBtn = document.getElementById("timerBtn");
+      const timerText = document.getElementById("timerText");
+
+      let cur = 0;
+      let noteOn = true;
+      let camOn = false;
+      let streamRef = null;
+      let sec = 240;
+      let tId = null;
+
+      slides.forEach((_, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "dot" + (i === 0 ? " active" : "");
+        b.textContent = String(i + 1);
+        b.addEventListener("click", () => go(i));
+        dotsRow.appendChild(b);
+      });
+
+      function go(idx) {
+        cur = (idx + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle("active", i === cur));
+        Array.from(dotsRow.children).forEach((d, i) => d.classList.toggle("active", i === cur));
+        counterText.textContent = `${cur + 1} / ${slides.length}`;
+        const prompt = slides[cur].getAttribute("data-focus") || "";
+        speakerQuote.textContent = prompt;
+        camPromptText.textContent = prompt;
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", () => go(cur - 1));
+      document.getElementById("nextBtn").addEventListener("click", () => go(cur + 1));
+
+      toggleNoteBtn.addEventListener("click", () => {
+        noteOn = !noteOn;
+        speakerBar.classList.toggle("hidden", !noteOn);
+        toggleNoteBtn.textContent = noteOn ? "🎙️ Фокус спикера: ВКЛ" : "🎙️ Фокус спикера: ВЫКЛ";
+      });
+
+      // Логика работы Веб-камеры на 100% и Телесуфлёра
+      async function startCamera() {
+        try {
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            streamRef = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            camVideo.srcObject = streamRef;
+            camPlaceholder.style.display = "none";
+            camVideo.style.display = "block";
+          }
+        } catch (err) {
+          console.warn("Камера недоступна или заблокирована:", err);
+          camPlaceholder.innerHTML = `<span style="font-size:32px;">🪞</span><span>Режим авто-зеркала активен</span><span style="font-size:11px; color:#f59e0b;">(Разрешите камеру в строке браузера для видопотока)</span>`;
+        }
+      }
+
+      function stopCamera() {
+        if (streamRef) {
+          streamRef.getTracks().forEach(track => track.stop());
+          streamRef = null;
+        }
+        camVideo.srcObject = null;
+        camVideo.style.display = "none";
+        camPlaceholder.style.display = "flex";
+      }
+
+      function toggleCamModal(show) {
+        camOn = typeof show === "boolean" ? show : !camOn;
+        camPrompterModal.classList.toggle("hidden", !camOn);
+        toggleCamBtn.textContent = camOn ? "📹 Камера (100% ВКЛ)" : "📹 Камера-Суфлёр (100%)";
+        toggleCamBtn.style.background = camOn ? "#10b981" : "#0ea5e9";
+        toggleCamBtn.style.borderColor = camOn ? "#10b981" : "#0ea5e9";
+
+        if (camOn) {
+          startCamera();
+        } else {
+          stopCamera();
+        }
+      }
+
+      toggleCamBtn.addEventListener("click", () => toggleCamModal());
+      closeCamBtn.addEventListener("click", () => toggleCamModal(false));
+
+      timerBtn.addEventListener("click", () => {
+        if (tId) {
+          clearInterval(tId);
+          tId = null;
+          sec = 240;
+          timerText.textContent = "04:00";
+          return;
+        }
+        tId = setInterval(() => {
+          if (sec > 0) {
+            sec--;
+            timerText.textContent = `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+          } else {
+            clearInterval(tId);
+            tId = null;
+          }
+        }, 1000);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(cur + 1); }
+        if (e.key === "ArrowLeft") { e.preventDefault(); go(cur - 1); }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("export") === "png") {
+        document.body.classList.add("export-png");
+      }
+      const sParam = params.get("slide");
+      const startSlide = sParam ? parseInt(sParam, 10) - 1 : 0;
+      go(isNaN(startSlide) ? 0 : Math.max(0, Math.min(slides.length - 1, startSlide)));
+    })();
+  </script>
+</body>
+</html>

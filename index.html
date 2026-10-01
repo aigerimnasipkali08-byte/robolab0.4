@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboLab — Виртуальная STEM-лаборатория схемотехники и робототехники</title>
+  <meta name="description" content="Интерактивная виртуальная STEM-лаборатория микроконтроллеров Arduino, ESP32 и Raspberry Pi Pico со встроенным AI-наставником для сельских и малых школ без сложного и дорогого оборудования." />
+  <meta name="keywords" content="RoboLab, STEM лаборатория, симулятор Arduino, ESP32, робототехника для школ, виртуальная лаборатория, схемотехника" />
+  <meta name="theme-color" content="#181920" />
+
+  <!-- Open Graph метатеги для красивого предпросмотра в Telegram, WhatsApp и Google Формах -->
+  <meta property="og:title" content="RoboLab — Виртуальная STEM-лаборатория схемотехники и робототехники" />
+  <meta property="og:description" content="Собирайте электрические схемы на Arduino Uno, Nano, Mega, ESP32 и Pi Pico, пишите код на C++ и учитесь с AI Наставником прямо в браузере — доступное STEM-образование для каждой школы." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RoboLab" />
+  <meta property="og:image" content="./og-banner.svg" />
+
+  <!-- Twitter / Telegram Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="RoboLab — Виртуальная STEM-лаборатория схемотехники и робототехники" />
+  <meta name="twitter:description" content="Интерактивный 2D-симулятор микроконтроллеров и электронных схем с AI Наставником для школ без дорогого оборудования." />
+  <meta name="twitter:image" content="./og-banner.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="./og-banner.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Подключение Google Identity Services SDK и EmailJS -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
+</head>
+<body>
+
+  <!-- ==================== 1. СТРАНИЦА ПРИВЕТСТВИЯ (LANDING / HERO PAGE) ==================== -->
+  <div class="landing-view" id="landingView">
+    <!-- Шапка лендинга с фирменным векторным SVG-логотипом RoboLab -->
+    <header class="landing-navbar">
+      <div class="toolbar-brand">
+        <div class="robolab-logo-box" title="RoboLab — Виртуальная STEM-лаборатория">
+          <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Дорожки печатной платы и выводы микрочипа по бокам -->
+            <path d="M2 15H8M2 21H8M2 27H8" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M32 15H38M32 21H38M32 27H38" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="2" cy="15" r="1.5" fill="#00f5d4"/>
+            <circle cx="2" cy="27" r="1.5" fill="#f97316"/>
+            <circle cx="38" cy="15" r="1.5" fill="#f97316"/>
+            <circle cx="38" cy="27" r="1.5" fill="#00f5d4"/>
+            <!-- Антенна робота с оранжевым светящимся контактом -->
+            <path d="M20 9V4" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="3.5" r="2.5" fill="#f97316" stroke="#fed7aa" stroke-width="1"/>
+            <!-- Контур головы дружелюбного робота-микрочипа -->
+            <rect x="8" y="9" width="24" height="22" rx="6" fill="#161923" stroke="#22d3ee" stroke-width="2"/>
+            <!-- Внутренняя трассировка печатной платы на лбу робота -->
+            <path d="M14 9V12.5L17 15M26 9V12.5L23 15" stroke="#f97316" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="17" cy="15" r="1.2" fill="#fb923c"/>
+            <circle cx="23" cy="15" r="1.2" fill="#fb923c"/>
+            <!-- Светящиеся неоново-бирюзовые глаза робота -->
+            <rect x="12" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <rect x="22.5" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <!-- Дружелюбная улыбка в виде дорожки схемы с контактами -->
+            <path d="M14.5 25.5H17.5L19 27H21L22.5 25.5H25.5" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="14.5" cy="25.5" r="1.3" fill="#00f5d4"/>
+            <circle cx="25.5" cy="25.5" r="1.3" fill="#00f5d4"/>
+            <!-- Нижние пины микросхемы -->
+            <path d="M14 31V36M20 31V36M26 31V36" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-name" style="font-size: 18px;">
+            <span class="robo-part">Robo</span><span class="lab-part">Lab</span>
+          </span>
+          <span class="brand-sub">Виртуальная STEM-лаборатория</span>
+        </div>
+      </div>
+
+      <nav class="landing-nav-links">
+        <a href="#features-section">Возможности</a>
+        <a href="#features-section">Контроллеры Arduino / ESP32</a>
+        <a href="#features-section">✦ AI Наставник RoboLab</a>
+        <button type="button" class="btn-duo-nav-tab" id="openDuoTabFromLanding" title="Открыть интерактивный практикум по робототехнике и схемотехнике">
+          🎓 Практикум (Курс)
+        </button>
+        <button type="button" class="btn-share-project" id="openWeb3ModalBtn" style="background: rgba(0, 245, 212, 0.12); border-color: #00f5d4; color: #00f5d4; font-weight:700;" title="Открыть Web3 & Блокчейн кабинет">
+          ⚡ Web3 / $ROBO
+        </button>
+        <a href="./presentation.html" class="btn-share-project" style="text-decoration:none;" title="Открыть питч-презентацию проекта RoboLab">
+          📊 Презентация
+        </a>
+      </nav>
+
+      <div class="landing-nav-actions">
+        <button type="button" class="btn-share-project" id="landingShareBtn" title="Скопировать публичную ссылку на проект RoboLab">
+          🔗 Поделиться проектом
+        </button>
+        <button class="btn-outline-graphite" id="landingLoginBtn">Войти в аккаунт</button>
+        <button class="btn-orange-cta" id="landingRegisterBtn">Регистрация</button>
+        <button class="btn-logout-toolbar hidden" id="landingLogoutBtn" title="Выйти из аккаунта">Выйти</button>
+      </div>
+    </header>
+
+    <!-- Главный Hero-экран -->
+    <section class="landing-hero-container">
+      <div>
+        <div class="hero-badge-pill">
+          <span>✦ RoboLab · Доступное STEM-образование без дорогого оборудования</span>
+        </div>
+        <h1 class="hero-title">
+          Интерактивная лаборатория микроконтроллеров <span>RoboLab</span>
+        </h1>
+        <p class="hero-subtitle">
+          Собирайте реалистичные электрические схемы на платах <strong>Arduino Uno, Nano, Mega, ESP32 и Raspberry Pi Pico</strong>, программируйте на C++ и разбирайте ошибки вместе с <strong>AI Наставником RoboLab</strong> прямо в браузере — без риска сжечь радиодетали.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn-hero-primary" id="heroStartFreeBtn">
+            <span>Начать работу в RoboLab</span>
+            <span>▶</span>
+          </button>
+          <button type="button" class="btn-duo-nav-tab" id="heroDuoCourseBtn" style="padding: 12px 20px; font-size: 14px;">
+            🎓 Интерактивный Практикум
+          </button>
+          <button class="btn-hero-secondary" id="heroLoginModalBtn">
+            Войти в аккаунт
+          </button>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="hero-stat-item">
+            <strong>5 плат МК</strong>
+            <span>Uno · Nano · Mega · ESP32 · Pico</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>100% в браузере</strong>
+            <span>Защита цепей и мгновенный старт</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>✦ AI Наставник</strong>
+            <span>Анализ кода C++ и распиновки</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Демонстрационный интерактивный блок-превью симулятора -->
+      <div class="hero-preview-window">
+        <div class="preview-window-bar">
+          <div class="window-dots">
+            <span style="background:#ef4444"></span>
+            <span style="background:#f59e0b"></span>
+            <span style="background:#22c55e"></span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 11.5px; color: #cbd5e1;">
+            RoboLab IDE — sketch_blink.ino (Arduino Uno R3)
+          </span>
+          <button class="btn-start-sim" id="heroPreviewToggleBtn" style="padding: 4px 11px; font-size: 11px;">
+            ⏹ Стоп превью
+          </button>
+        </div>
+
+        <div class="preview-split-body">
+          <!-- Левая часть превью: тёмный редактор C++ -->
+          <div class="preview-code-side">
+            <div>
+              <div style="color:#636d83; margin-bottom:4px;">// RoboLab: Скетч Blink</div>
+              <div><span class="tok-kw">void</span> <span class="tok-fn">setup</span>() {</div>
+              <div>&nbsp;&nbsp;<span class="tok-fn">pinMode</span>(<span class="tok-num">13</span>, <span class="tok-const">OUTPUT</span>);</div>
+              <div>}</div>
+              <div style="margin-top:6px;"><span class="tok-kw">void</span> <span class="tok-fn">loop</span>() {</div>
+              <div>&nbsp;&nbsp;<span class="tok-fn">digitalWrite</span>(<span class="tok-num">13</span>, <span class="tok-const">HIGH</span>);</div>
+              <div>&nbsp;&nbsp;<span class="tok-fn">delay</span>(<span class="tok-num">500</span>);</div>
+              <div>&nbsp;&nbsp;<span class="tok-fn">digitalWrite</span>(<span class="tok-num">13</span>, <span class="tok-const">LOW</span>);</div>
+              <div>&nbsp;&nbsp;<span class="tok-fn">delay</span>(<span class="tok-num">500</span>);</div>
+              <div>}</div>
+            </div>
+            <div style="padding: 7px; background:#14151b; border:1px solid #2e303a; border-radius:6px; font-size:10px; color:#94a3b8;">
+              <span style="color:#f97316; font-weight:700;">UART 9600:</span> Цепь замкнута · R1 = 220 Ом
+            </div>
+          </div>
+
+          <!-- Правая часть превью: светлый холст с живой SVG-моделью Arduino Uno и светодиода -->
+          <div class="preview-canvas-side">
+            <div class="preview-floating-ai">✦ AI Наставник RoboLab</div>
+            <div id="landingInteractivePreview" style="transform: scale(0.88); transform-origin: center;"></div>
+          </div>
+        </div>
+
+        <div class="preview-bottom-bar">
+          <span style="color:#94a3b8;">🔒 Для доступа к полному симулятору требуется вход в аккаунт</span>
+          <button class="btn-orange-cta" id="previewOpenLabBtn" style="padding: 5px 14px; font-size: 11.5px;">
+            Открыть RoboLab →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок ключевых возможностей платформы -->
+    <section class="landing-features-section" id="features-section">
+      <div class="section-heading-wrap">
+        <h2>Все инструменты современной робототехники в RoboLab</h2>
+        <p>От первой мигающей лампочки на Arduino Uno до умных датчиков и IoT-проектов на ESP32 под руководством AI-наставника.</p>
+      </div>
+
+      <div class="features-cards-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: rgba(34, 211, 238, 0.14); color: #22d3ee;">⚡</div>
+          <h3>Схемотехника Arduino и ESP32</h3>
+          <p>Детально прорисованные платы Arduino Uno, Nano, Mega, ESP32 DevKit V1 и Raspberry Pi Pico. Подключайте сервоприводы SG90, экраны LCD 1602 и OLED, адресные матрицы NeoPixel и датчики DHT11 / HC-SR04.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: rgba(249, 115, 22, 0.16); color: #fb923c;">💻</div>
+          <h3>Программирование на C++ и отладка</h3>
+          <p>Тёмный графитовый редактор кода с подсветкой синтаксиса C++, готовыми лабораторными скетчами, пошаговой отладкой и двусторонним монитором последовательного порта (Serial Monitor).</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box" style="background: rgba(124, 58, 237, 0.2); color: #c4b5fd;">✦</div>
+          <h3>AI Наставник RoboLab</h3>
+          <p>Интерактивный чат с ИИ анализирует ваш код в редакторе и собранную схему на холсте, подсказывает распиновку датчиков, находит синтаксические баги и генерирует готовые блоки C++ кода.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      © 2026 RoboLab · Виртуальная STEM-лаборатория микроконтроллеров, схемотехники и робототехники
+    </footer>
+  </div>
+
+  <!-- ==================== 2. МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ, 2FA EMAIL-ВЕРИФИКАЦИИ И GOOGLE SIGN-IN ==================== -->
+  <div class="auth-modal-backdrop hidden" id="authModalBackdrop">
+    <div class="auth-modal-card">
+      <button class="auth-close-x" id="closeAuthModalBtn" title="Закрыть окно">✕</button>
+
+      <!-- Шапка модального окна с логотипом RoboLab -->
+      <div style="display:flex; align-items:center; gap:11px; margin-bottom:6px;">
+        <div class="robolab-logo-box">
+          <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 15H8M2 21H8M2 27H8M32 15H38M32 21H38M32 27H38" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 9V4" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="3.5" r="2.5" fill="#f97316"/>
+            <rect x="8" y="9" width="24" height="22" rx="6" fill="#161923" stroke="#22d3ee" stroke-width="2"/>
+            <rect x="12" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <rect x="22.5" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <path d="M14.5 25.5H17.5L19 27H21L22.5 25.5H25.5" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 style="font-size:16px; font-weight:800; color:#ffffff;" id="authModalTitle">Вход в RoboLab</h3>
+          <p style="font-size:11.5px; color:#94a3b8;">Двухфакторная защита и сохранение ваших схем</p>
+        </div>
+      </div>
+
+      <!-- ШАГ 1: Форма входа / регистрации -->
+      <div class="auth-step-pane" id="authStepForm">
+        <div class="auth-tabs-bar">
+          <button class="auth-tab-btn active" id="authTabLogin" data-auth-mode="login" type="button">Вход</button>
+          <button class="auth-tab-btn" id="authTabRegister" data-auth-mode="register" type="button">Регистрация</button>
+        </div>
+
+        <!-- Официальная кнопка Google Sign-In -->
+        <button class="btn-google-oauth" id="googleOAuthBtn" type="button">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Войти с помощью Google</span>
+        </button>
+
+        <div class="auth-divider">или через электронную почту</div>
+
+        <form id="authForm" novalidate>
+          <!-- Поле Имени (для регистрации) -->
+          <div class="auth-field-group hidden" id="authNameGroup">
+            <label for="authNameInput">Имя пользователя</label>
+            <input type="text" class="auth-input" id="authNameInput" placeholder="Например: Алия Садыкова" />
+          </div>
+
+          <!-- Поле Email -->
+          <div class="auth-field-group">
+            <label for="authEmailInput">Электронная почта (Email)</label>
+            <input type="email" class="auth-input" id="authEmailInput" placeholder="student@robolab.kz" required />
+          </div>
+
+          <!-- Поле Пароль с проверкой надёжности (от 8 символов, буквы и цифры) -->
+          <div class="auth-field-group">
+            <label for="authPasswordInput">Пароль (от 8 символов, буквы и цифры)</label>
+            <div class="auth-input-wrap">
+              <input type="password" class="auth-input" id="authPasswordInput" placeholder="Например: Robo2026" required />
+              <button type="button" class="pwd-toggle-btn" id="togglePwdBtn" title="Показать / скрыть пароль">👁</button>
+            </div>
+            <div class="pwd-strength-wrap hidden" id="pwdStrengthWrap">
+              <div class="pwd-strength-bars">
+                <div class="pwd-bar-seg" id="pwdSeg1"></div>
+                <div class="pwd-bar-seg" id="pwdSeg2"></div>
+                <div class="pwd-bar-seg" id="pwdSeg3"></div>
+              </div>
+              <div class="pwd-rules-hint">
+                <span id="pwdStrengthLabel">Минимум 8 символов, буквы и цифры</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Повтор пароля (для регистрации) -->
+          <div class="auth-field-group hidden" id="authConfirmGroup">
+            <label for="authConfirmInput">Повтор пароля</label>
+            <div class="auth-input-wrap">
+              <input type="password" class="auth-input" id="authConfirmInput" placeholder="Повторите пароль ещё раз" />
+            </div>
+          </div>
+
+          <!-- Чекбокс согласия с правилами -->
+          <label class="auth-checkbox-row">
+            <input type="checkbox" id="authRulesCheckbox" checked />
+            <span>Я соглашаюсь с правилами безопасности виртуальной лаборатории RoboLab</span>
+          </label>
+
+          <div class="auth-feedback-box hidden" id="authFeedbackBox"></div>
+
+          <button type="submit" class="btn-auth-submit" id="authSubmitBtn">Войти в RoboLab</button>
+        </form>
+
+        <!-- Заметная кнопка мгновенного демо-доступа для членов жюри хакатона (Demo Mode) -->
+        <button type="button" class="btn-jury-demo" id="juryDemoLoginBtn" title="Мгновенный вход с временным подтверждённым профилем «Судья / Гость»">
+          <span>⚡ Быстрый гостевой вход для жюри / демо-доступ</span>
+        </button>
+      </div>
+
+      <!-- ШАГ 2: Экран ввода 6-значного кода подтверждения («Подтвердите ваш Email») -->
+      <div class="auth-step-pane hidden" id="authStepOtp" style="margin-top:12px;">
+        <div class="otp-step-badge">✉️ Подтвердите ваш Email</div>
+        <h4 class="otp-heading">Проверьте вашу почту</h4>
+        <p class="otp-subtitle">
+          Мы отправили 6-значный проверочный код на адрес <strong id="otpTargetEmail">user-email@domain.com</strong>
+        </p>
+
+        <!-- 6 отдельных стилизованных квадратиков под цифры с авто-переходом фокуса и поддержкой Paste -->
+        <div class="otp-inputs-row" id="otpInputsRow">
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="0" autocomplete="one-time-code" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="1" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="2" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="3" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="4" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-digit-input" data-otp-index="5" />
+        </div>
+
+        <div class="auth-feedback-box hidden" id="otpFeedbackBox"></div>
+
+        <button type="button" class="btn-auth-submit" id="verifyOtpSubmitBtn">
+          Подтвердить код и войти в RoboLab
+        </button>
+
+        <!-- Интерактивный таймер обратного отсчёта 00:59 -->
+        <div class="otp-timer-row">
+          <span id="otpCountdownText">Отправить код повторно через 00:59</span>
+          <button type="button" class="btn-resend-otp" id="resendOtpBtn" disabled>Повторно (00:59)</button>
+        </div>
+
+        <div style="margin-top:10px; text-align:center;">
+          <button type="button" class="btn-back-step" id="backToStep1Btn">← Изменить Email или данные</button>
+        </div>
+      </div>
+
+      <!-- ШАГ 3: Успешное подтверждение Email -->
+      <div class="auth-step-pane hidden" id="authStepSuccess" style="text-align:center; padding: 18px 8px;">
+        <div style="width:54px; height:54px; border-radius:50%; background:rgba(34,197,94,0.18); border:2px solid #22c55e; color:#4ade80; font-size:26px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+          ✓
+        </div>
+        <h4 style="font-size:19px; font-weight:800; color:#ffffff; margin-bottom:6px;">Email успешно подтверждён!</h4>
+        <p style="font-size:12.5px; color:#94a3b8;">
+          Аккаунт <strong id="verifiedSuccessEmail" style="color:#22d3ee;"></strong> верифицирован.<br/>Открываем лабораторию RoboLab...
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Всплывающее пуш-уведомление с 6-значным кодом подтверждения (для удобства тестирования жюри) -->
+  <div class="email-push-toast hidden" id="emailPushToast">
+    <div class="email-toast-header">
+      <span>📨 RoboLab Mail · Входящее письмо</span>
+      <button type="button" id="closeEmailToastBtn" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-weight:700;">✕</button>
+    </div>
+    <div style="font-size:12px; color:#cbd5e1; line-height:1.4;">
+      Кому: <strong id="toastRecipientEmail" style="color:#ffffff;">student@robolab.kz</strong><br/>
+      Ваш 6-значный проверочный код подтверждения:
+    </div>
+    <div class="email-toast-code-box">
+      <span class="email-toast-code" id="toastVerificationCode">482910</span>
+      <button type="button" class="btn-autofill-otp" id="autofillOtpToastBtn">Вставить код автоматически</button>
+    </div>
+  </div>
+
+  <!-- Уведомление о копировании публичной ссылки на проект -->
+  <div class="share-copied-toast hidden" id="shareCopiedToast">
+    ✅ Ссылка скопирована!
+  </div>
+
+  <!-- Попап выбора аккаунта Google (Google OAuth2 / One Tap Account Chooser) -->
+  <div class="google-picker-backdrop hidden" id="googlePickerBackdrop">
+    <div class="google-picker-card">
+      <div class="google-picker-top">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:600;">
+          <svg width="16" height="16" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Вход с помощью аккаунта Google</span>
+        </div>
+        <button type="button" id="closeGooglePickerBtn" style="background:transparent; border:none; font-size:15px; color:#6b7280; cursor:pointer;">✕</button>
+      </div>
+      <div class="google-picker-body">
+        <h4 style="font-size:17px; font-weight:700; color:#111827; margin-bottom:4px;">Выберите аккаунт</h4>
+        <p style="font-size:12.5px; color:#4b5563; margin-bottom:14px;">для перехода в приложение <strong style="color:#0f172a;">RoboLab</strong></p>
+
+        <div id="googleAccountsList"></div>
+
+        <form id="customGoogleAccountForm" style="margin-top:12px; padding-top:12px; border-top:1px solid #e5e7eb;">
+          <div style="font-size:11.5px; font-weight:700; color:#374151; margin-bottom:6px;">Или укажите свой аккаунт Google:</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <input type="text" id="customGoogleNameInput" placeholder="Ваше имя (например: Арман)" style="padding:7px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:12px;" />
+            <div style="display:flex; gap:6px;">
+              <input type="email" id="customGoogleEmailInput" placeholder="your.email@gmail.com" required style="flex:1; padding:7px 10px; border:1px solid #d1d5db; border-radius:7px; font-size:12px;" />
+              <button type="submit" style="background:#1a73e8; color:#fff; border:none; border-radius:7px; padding:7px 13px; font-size:12px; font-weight:700; cursor:pointer;">Войти</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. ОСНОВНАЯ РАБОЧАЯ СТРАНИЦА (СИМУЛЯТОР СХЕМ ROBOLAB) ==================== -->
+  <div class="simulator-view hidden auth-locked" id="simulatorView">
+
+    <!-- Защитный экран блокировки при попытке доступа без авторизации -->
+    <div class="auth-lock-overlay hidden" id="authLockOverlay">
+      <div class="auth-lock-card">
+        <div class="robolab-logo-box" style="margin: 0 auto; width: 46px; height: 46px;">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 15H8M2 21H8M2 27H8M32 15H38M32 21H38M32 27H38" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 9V4" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="3.5" r="2.5" fill="#f97316"/>
+            <rect x="8" y="9" width="24" height="22" rx="6" fill="#161923" stroke="#22d3ee" stroke-width="2"/>
+            <rect x="12" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <rect x="22.5" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <path d="M14.5 25.5H17.5L19 27H21L22.5 25.5H25.5" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>🔒 Доступ к лаборатории ограничен</h3>
+        <p>Для работы с симулятором микроконтроллеров, редактором кода и AI Наставником RoboLab войдите в аккаунт или используйте демо-доступ для жюри.</p>
+        <button class="btn-orange-cta" id="unlockLoginBtn" style="width:100%; padding:11px;">Войти / Подтвердить аккаунт</button>
+        <button type="button" class="btn-jury-demo" id="unlockJuryDemoBtn">⚡ Быстрый гостевой вход для жюри / демо-доступ</button>
+      </div>
+    </div>
+
+    <!-- Верхняя панель тулбара -->
+    <header class="top-toolbar">
+      <div class="toolbar-brand">
+        <button class="btn-back-home" id="backToLandingBtn" title="Вернуться на главную страницу RoboLab">
+          ← Главная
+        </button>
+        <div class="robolab-logo-box" title="RoboLab">
+          <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 15H8M2 21H8M2 27H8" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M32 15H38M32 21H38M32 27H38" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="2" cy="15" r="1.5" fill="#00f5d4"/>
+            <circle cx="2" cy="27" r="1.5" fill="#f97316"/>
+            <circle cx="38" cy="15" r="1.5" fill="#f97316"/>
+            <circle cx="38" cy="27" r="1.5" fill="#00f5d4"/>
+            <path d="M20 9V4" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="3.5" r="2.5" fill="#f97316"/>
+            <rect x="8" y="9" width="24" height="22" rx="6" fill="#161923" stroke="#22d3ee" stroke-width="2"/>
+            <path d="M14 9V12.5L17 15M26 9V12.5L23 15" stroke="#f97316" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="12" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <rect x="22.5" y="17.5" width="5.5" height="4.5" rx="2" fill="#00f5d4"/>
+            <path d="M14.5 25.5H17.5L19 27H21L22.5 25.5H25.5" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <span class="brand-name">
+            <span class="robo-part">Robo</span><span class="lab-part">Lab</span>
+          </span>
+          <span class="brand-sub" id="activeProjectLabel">Blink (Arduino Uno)</span>
+        </div>
+      </div>
+
+      <div class="toolbar-center">
+        <button class="btn-start-sim" id="runSimBtn" title="Запустить симуляцию схемы и кода">
+          ▶ Старт
+        </button>
+        <button class="btn-stop-sim hidden" id="stopSimBtn" title="Остановить симуляцию">
+          ⏹ Стоп
+        </button>
+        <button class="tool-icon-btn" id="resetSimBtn" title="Сбросить схему к эталону примера">
+          ⟲ Сброс
+        </button>
+        <button class="tool-icon-btn" id="stepSimBtn" title="Выполнить один шаг отладки программы">
+          ⏭ Шаг отладки
+        </button>
+
+        <div class="toolbar-divider"></div>
+
+        <button class="tool-icon-btn active" id="toolWireBtn" title="Инструмент подключения проводов">
+          🔌 Провод
+        </button>
+        <div class="wire-color-dots" title="Цвет виртуального провода">
+          <button class="wire-dot active" style="background:#ef4444" data-color="#ef4444" title="Красный (VCC / Сигнал)"></button>
+          <button class="wire-dot" style="background:#2563eb" data-color="#2563eb" title="Синий (GND)"></button>
+          <button class="wire-dot" style="background:#16a34a" data-color="#16a34a" title="Зелёный"></button>
+          <button class="wire-dot" style="background:#f97316" data-color="#f97316" title="Оранжевый"></button>
+          <button class="wire-dot" style="background:#eab308" data-color="#eab308" title="Жёлтый"></button>
+          <button class="wire-dot" style="background:#9333ea" data-color="#9333ea" title="Фиолетовый"></button>
+        </div>
+
+        <button class="tool-icon-btn" id="toolScissorsBtn" title="Ножницы: удаление выбранного компонента или провода">
+          ✂️ Ножницы
+        </button>
+        <button class="tool-icon-btn" id="rotateLeftBtn" title="Повернуть выбранный компонент влево (↺ -90°)">
+          ↺
+        </button>
+        <button class="tool-icon-btn" id="rotateRightBtn" title="Повернуть выбранный компонент вправо (↻ +90°)">
+          ↻
+        </button>
+
+        <div class="toolbar-divider"></div>
+
+        <button class="tool-icon-btn" id="undoBtn" title="Отменить действие (Undo)">
+          ↶
+        </button>
+        <button class="tool-icon-btn" id="redoBtn" title="Повторить действие (Redo)">
+          ↷
+        </button>
+        <button class="tool-icon-btn" id="brokenDemoBtn" title="Смоделировать типичную ошибку подключения для проверки в AI Наставнике">
+          ⚠️ Тест ошибки
+        </button>
+      </div>
+
+      <div class="toolbar-right">
+        <button type="button" class="btn-duo-nav-tab" id="openDuoTabFromSim" title="Перейти в интерактивный практикум по робототехнике">
+          🎓 Практикум
+        </button>
+
+        <button type="button" class="btn-share-project" id="openWeb3ModalBtnSim" style="background: rgba(0, 245, 212, 0.12); border-color: #00f5d4; color: #00f5d4; font-weight:700;" title="Открыть Web3 & Блокчейн кабинет">
+          ⚡ Web3 / $ROBO
+        </button>
+
+        <button type="button" class="btn-share-project" id="shareProjectBtn" title="Скопировать публичную ссылку на проект в буфер обмена">
+          🔗 Поделиться проектом
+        </button>
+
+        <button class="lang-select-btn" id="langToggleBtn" title="Язык интерфейса">
+          RU ▾
+        </button>
+
+        <!-- Профиль пользователя с реальной аватаркой и выпадающим меню (Имя, Email, кнопка «Выйти») -->
+        <div class="profile-dropdown-wrap" id="profileDropdownWrap">
+          <button type="button" class="user-profile-pill" id="userProfileBadge" title="Профиль пользователя RoboLab">
+            <span id="profileAvatarSlot">👤</span>
+            <span id="loginBtnText">Профиль</span>
+            <span class="profile-caret">▾</span>
+          </button>
+
+          <div class="profile-dropdown-menu hidden" id="profileDropdownMenu">
+            <div class="dropdown-user-row">
+              <div id="dropdownAvatarSlot"></div>
+              <div class="dropdown-user-info">
+                <div class="dropdown-user-name" id="dropdownUserName">Ученик RoboLab</div>
+                <div class="dropdown-user-email" id="dropdownUserEmail">student@robolab.kz</div>
+              </div>
+            </div>
+            <div class="dropdown-verified-pill" id="dropdownVerifiedBadge">
+              ✓ Email подтверждён
+            </div>
+            <button type="button" class="btn-share-project" id="dropdownShareBtn" style="width:100%; justify-content:center; margin-bottom:8px;">
+              🔗 Поделиться проектом
+            </button>
+            <button type="button" class="btn-logout-toolbar" id="logoutBtn" style="width:100%;">
+              Выйти из аккаунта
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Трёхзонная рабочая область -->
+    <main class="ide-main-grid" id="ideMainGrid">
+
+      <!-- 1. Левая зона: Редактор кода C++ и Монитор порта -->
+      <section class="left-code-zone">
+        <div class="left-action-bar">
+          <div class="left-action-group">
+            <button class="editor-act-btn" id="newSketchBtn" title="Создать новый чистый скетч">
+              📄 Создать
+            </button>
+            <button class="editor-act-btn" id="saveSketchBtn" title="Сохранить проект в JSON">
+              💾 Сохранить
+            </button>
+            <select class="examples-select" id="examplesSelect" title="Библиотека готовых примеров RoboLab">
+            </select>
+          </div>
+          <button class="editor-act-btn" id="expandEditorBtn" title="Развернуть / свернуть панель кода">
+            ⛶ Разворот
+          </button>
+        </div>
+
+        <div class="code-editor-container">
+          <div class="editor-line-numbers" id="lineNumbers">
+            <div>1</div>
+          </div>
+          <div class="editor-stack">
+            <pre class="code-highlight-layer" id="codeHighlightLayer" aria-hidden="true"></pre>
+            <textarea class="code-input-layer" id="codeEditor" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+          </div>
+        </div>
+
+        <div class="serial-monitor-box">
+          <div class="serial-header-bar">
+            <div class="serial-tabs">
+              <button class="serial-tab-btn active" data-serial-tab="monitor" id="tabMonitorBtn">МОНИТОР</button>
+              <button class="serial-tab-btn" data-serial-tab="console" id="tabConsoleBtn">КОНСОЛЬ</button>
+            </div>
+            <div class="serial-tools">
+              <select class="serial-select" id="serialLineEnding" title="Выбор окончания строки">
+                <option value="\n">NewLine (\n)</option>
+                <option value="">Без окончания</option>
+                <option value="\r">Carriage Return (\r)</option>
+                <option value="\r\n">Both NL &amp; CR (\r\n)</option>
+              </select>
+              <button class="serial-mini-btn" id="clearSerialBtn" title="Очистить вывод монитора порта">🗑</button>
+              <button class="serial-mini-btn" id="downloadLogsBtn" title="Скачать логи Serial-монитора (.txt)">⬇ Логи</button>
+            </div>
+          </div>
+
+          <div class="serial-log-area" id="serialOutput"></div>
+
+          <div class="serial-input-row">
+            <input type="text" class="serial-cmd-input" id="serialCmdInput" placeholder="Введите команду (например: ON, OFF, STATUS)..." />
+            <button class="btn-serial-send" id="serialSendBtn">Отправить</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Центральная колонка: Библиотека контроллеров и модулей -->
+      <aside class="center-library-zone">
+        <div class="library-search-box">
+          <input type="text" class="library-search-input" id="librarySearchInput" placeholder="🔍 Поиск платы или датчика..." />
+        </div>
+        <div class="library-scroll-list" id="libraryScrollList"></div>
+      </aside>
+
+      <!-- 3. Правая зона: Светлый холст с точками и плавающей кнопкой «✦ Ассистент» -->
+      <section class="right-canvas-zone">
+        <div class="canvas-status-strip">
+          <div id="circuitStatusBanner" class="status-ok-pill">
+            ✅ Схема готова к запуску. Кликните по любому пину для протяжки провода или перетащите деталь из библиотеки.
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #64748b;" id="boardInfoPill">
+            Плата: Arduino Uno R3
+          </div>
+        </div>
+
+        <div class="canvas-host" id="circuitContainer"></div>
+
+        <!-- Плавающая фиолетовая кнопка «✦ Ассистент» -->
+        <button class="floating-assistant-btn" id="floatingAssistantBtn" title="Открыть чат с AI Наставником RoboLab">
+          <span>✦ Ассистент</span>
+          <span class="assistant-count-pill" id="mentorCountBadge">0</span>
+        </button>
+
+        <!-- 4. ИНТЕРАКТИВНАЯ БОКОВАЯ ВЫДВИЖНАЯ ПАНЕЛЬ (DRAWER) СПРАВА: «AI НАСТАВНИК ROBOLAB» -->
+        <aside class="assistant-drawer drawer-closed" id="assistantDrawer">
+          <!-- Шапка чата: иконка робота/ИИ, заголовок «AI Наставник RoboLab», статус «Онлайн» и кнопка закрытия -->
+          <div class="assistant-drawer-header">
+            <div class="ai-header-identity">
+              <div class="ai-bot-avatar" title="AI Наставник RoboLab">
+                <svg width="22" height="22" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 8V3" stroke="#00f5d4" stroke-width="2.2" stroke-linecap="round"/>
+                  <circle cx="20" cy="3" r="2.3" fill="#f97316"/>
+                  <rect x="7" y="8" width="26" height="23" rx="6" fill="#161923" stroke="#00f5d4" stroke-width="2"/>
+                  <rect x="11.5" y="16" width="6" height="5" rx="2" fill="#00f5d4"/>
+                  <rect x="22.5" y="16" width="6" height="5" rx="2" fill="#00f5d4"/>
+                  <path d="M14 25.5H26" stroke="#f97316" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="ai-header-titles">
+                <h4>AI Наставник RoboLab</h4>
+                <div class="ai-status-row">
+                  <span class="ai-online-dot"></span>
+                  <span>Онлайн · Анализ кода и схемы</span>
+                </div>
+              </div>
+            </div>
+            <button class="assistant-close-btn" id="closeAssistantBtn" title="Закрыть панель чата">✕</button>
+          </div>
+
+          <div class="assistant-tabs">
+            <button class="assist-tab-btn active" data-assist-tab="chat">💬 Чат с ИИ</button>
+            <button class="assist-tab-btn" data-assist-tab="mentor">🔍 Диагностика</button>
+            <button class="assist-tab-btn" data-assist-tab="theory">📚 Теория</button>
+          </div>
+
+          <!-- Вкладка 1: Полноценный рабочий чат с AI Наставником RoboLab -->
+          <div class="ai-chat-pane" data-assist-pane="chat" id="aiChatPane">
+            <div class="ai-chat-messages" id="aiChatMessages">
+              <div class="chat-msg ai">
+                <strong>🤖 AI Наставник RoboLab:</strong><br />
+                Привет! Я твой персональный AI-наставник по робототехнике. Я помогу разобраться со схемой, найти баги в скетче Arduino или написать код для любого датчика. Что собираем сегодня?
+              </div>
+            </div>
+
+            <!-- Быстрые кнопки-подсказки (Chips) для моментального вопроса -->
+            <div class="ai-chips-bar">
+              <button class="ai-chip-btn" type="button" data-ai-prompt="Как зажечь светодиод?">Как зажечь светодиод?</button>
+              <button class="ai-chip-btn" type="button" data-ai-prompt="Подключение сервопривода к Uno">Подключение сервопривода к Uno</button>
+              <button class="ai-chip-btn" type="button" data-ai-prompt="Почему не компилируется код?">Почему не компилируется код?</button>
+              <button class="ai-chip-btn" type="button" data-ai-prompt="Помоги подключить DHT11">Помоги подключить DHT11</button>
+            </div>
+
+            <!-- Нижняя панель ввода с текстовым полем и кнопкой отправки с иконкой самолётика -->
+            <div class="ai-input-bar">
+              <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Задай вопрос о коде или схеме..." />
+              <button class="btn-ai-send" id="aiChatSendBtn" type="button" title="Отправить вопрос AI Наставнику">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Вкладка 2: Автоматический разбор ошибок схемы и кода -->
+          <div class="assistant-body-scroll hidden" data-assist-pane="mentor" id="diagnosticsList"></div>
+
+          <!-- Вкладка 3: Теория, инструкция и задание урока -->
+          <div class="assistant-body-scroll hidden" data-assist-pane="theory">
+            <div id="theoryPanelContent"></div>
+            <div class="assist-card" style="margin-top:10px;">
+              <h5 id="challengeTitle" style="margin-bottom:6px; font-size:13px;">Задание</h5>
+              <p id="challengeDesc" style="margin-bottom:10px; color:#475569;"></p>
+              <button class="btn-serial-send" id="checkChallengeBtn" style="width:100%;">Проверить решение</button>
+              <div id="challengeFeedback" style="margin-top:10px;"></div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Кнопки масштабирования (+, -, 100%) -->
+        <div class="canvas-zoom-controls">
+          <button class="zoom-btn" id="zoomOutBtn" title="Уменьшить масштаб">−</button>
+          <span class="zoom-readout" id="zoomReadout" title="Сбросить масштаб к 100%">100%</span>
+          <button class="zoom-btn" id="zoomInBtn" title="Увеличить масштаб">+</button>
+        </div>
+
+        <!-- Индикатор версии и Поддержка -->
+        <div class="canvas-bottom-right">
+          <span class="version-badge">RoboLab v3.0 · Симулятор МК</span>
+          <button class="support-btn" id="supportBtn">💬 AI Помощь</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== 4. ВКЛАДКА «ПРАКТИКУМ» (ИНТЕРАКТИВНЫЙ ТРЕНАЖЕР ПО РОБОТОТЕХНИКЕ И СХЕМОТЕХНИКЕ) ==================== -->
+  <div class="duo-trainer-view hidden" id="duoTrainerView">
+    <!-- Плавающий верхний бар: Стрик, Валюта (Вольты/Шестеренки), Заряд аккумулятора (Жизни) -->
+    <header class="duo-topbar">
+      <div class="duo-topbar-left">
+        <div class="duo-brand-pill">
+          <span>🤖 RoboLab Практикум</span>
+          <span class="sub">STEM Тренажёр</span>
+        </div>
+      </div>
+
+      <div class="duo-topbar-stats">
+        <div class="duo-stat-pill streak" title="Дни непрерывной сборки и программирования">
+          <span>🔥</span>
+          <span id="duoStreakCount">7</span>
+          <span>дн. стрик</span>
+        </div>
+        <div class="duo-stat-pill volts" title="Инженерная валюта: Вольты и Шестерёнки для кастомизации робота">
+          <span>⚙️</span>
+          <span id="duoVoltsCount">120</span>
+          <span>Вольт</span>
+        </div>
+        <button type="button" class="duo-stat-pill battery" id="duoRechargeBatteryBtn" title="Заряд аккумулятора (уменьшается при КЗ или ошибках). Нажмите для подзарядки!">
+          <span>🔋</span>
+          <span id="duoBatteryCount">5/5</span>
+          <span style="font-size:11px; opacity:0.85;">+ Зарядить</span>
+        </button>
+        <div class="duo-stat-pill" title="Общий профиль пользователя RoboLab">
+          <span>👤</span>
+          <span id="duoUserNameBadge">Инженер</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Трёхколоночный лейаут в стиле Duolingo Desktop -->
+    <div class="duo-main-layout">
+      <!-- Левая навигационная панель -->
+      <aside class="duo-left-nav">
+        <button type="button" class="duo-side-link active">
+          <span>🗺️</span>
+          <span>Карта курса</span>
+        </button>
+        <button type="button" class="duo-side-link" id="duoNavToSimulatorBtn">
+          <span>⚡</span>
+          <span>В Симулятор IDE</span>
+        </button>
+        <button type="button" class="duo-side-link" id="duoNavToLandingBtn">
+          <span>🏠</span>
+          <span>На Главную</span>
+        </button>
+      </aside>
+
+      <!-- Центральная колонка: Изогнутая дорожка уроков (Skill Path) -->
+      <main class="duo-center-path">
+        <div class="duo-unit-banner">
+          <div>
+            <div class="duo-unit-badge">РАЗДЕЛ 1 • МОДУЛЬ 1</div>
+            <h2>Основы схемотехники, защита от КЗ и приводы Arduino</h2>
+            <p>Собирайте схемы на мини-макетке, соединяйте пины датчиков и пишите код из блоков C++</p>
+          </div>
+          <button type="button" class="duo-unit-guide-btn" id="duoUnitGuideBtn">
+            📖 Начать с 1-го урока
+          </button>
+        </div>
+
+        <!-- Контейнер для круглых 3D-нод уровней, золотых колец и сундуков -->
+        <div class="duo-skill-path-nodes" id="duoSkillPathNodes"></div>
+      </main>
+
+      <!-- Правая колонка: Кастомизация личного робота, Ежедневные квесты, Лига лидеров -->
+      <aside class="duo-right-sidebar">
+        <!-- Мастерская кастомизации виртуального робота -->
+        <div class="duo-widget-card">
+          <div class="duo-widget-header">
+            <h3>🤖 Мой робот-напарник</h3>
+            <span style="font-size:11.5px; color:#38bdf8; font-weight:800;">Апгрейд за ⚙️</span>
+          </div>
+          <div class="duo-robot-stage" id="duoRobotAvatarPreview"></div>
+          <div class="duo-shop-list" id="duoRobotShopList"></div>
+        </div>
+
+        <!-- Ежедневные квесты -->
+        <div class="duo-widget-card">
+          <div class="duo-widget-header">
+            <h3>🎯 Квесты дня</h3>
+            <span style="font-size:11.5px; color:#ffc800; font-weight:800;">Обновление 24ч</span>
+          </div>
+          <div id="duoDailyQuestsList"></div>
+        </div>
+
+        <!-- Изумрудная Лига Инженеров -->
+        <div class="duo-widget-card">
+          <div class="duo-widget-header">
+            <h3>🏆 Изумрудная лига</h3>
+            <span style="font-size:11.5px; color:#58cc02; font-weight:800;">ТОП-4 недели</span>
+          </div>
+          <div id="duoLeaderboardList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Полноэкранный экран прохождения урока (Fullscreen Session 1-в-1 Duolingo) -->
+    <div class="duo-lesson-modal hidden" id="duoLessonModal">
+      <div class="duo-session-header">
+        <button type="button" class="duo-close-x-btn" id="duoCloseLessonBtn" title="Выйти из урока на карту курса">✕</button>
+        <div class="duo-session-progress-track">
+          <div class="duo-session-progress-fill" id="duoSessionProgressFill" style="width: 20%;"></div>
+  <!-- ==================== 4. МОДАЛЬНОЕ ОКНО WEB3 & БЛОКЧЕЙН КАБИНЕТА ==================== -->
+  <div class="auth-modal-backdrop hidden" id="web3ModalBackdrop">
+    <div class="auth-modal-card" style="max-width:720px; width:92%;">
+      <button class="auth-close-x" id="closeWeb3ModalBtn" title="Закрыть окно">✕</button>
+
+      <!-- Шапка Web3 Кабинета -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #1e293b; padding-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:40px; height:40px; border-radius:12px; background:rgba(0,245,212,0.12); border:1.5px solid #00f5d4; color:#00f5d4; font-size:22px; display:flex; align-items:center; justify-content:center;">
+            ⚡
+          </div>
+          <div>
+            <h3 style="font-size:18px; font-weight:800; color:#ffffff;">RoboLab Web3 &amp; Блокчейн Кабинет</h3>
+            <p style="font-size:12px; color:#94a3b8;">Soulbound NFT-сертификаты (SBT) и смарт-контракты IoT на Polygon Testnet</p>
+          </div>
+        </div>
+
+        <button type="button" class="btn-orange-cta" id="connectWeb3WalletBtn" style="padding:8px 16px; font-size:12.5px;">
+          👛 Подключить Wallet
+        </button>
+      </div>
+
+      <!-- Информация о Web3 кошельке и сети -->
+      <div style="background:#090d16; border:1px solid #1e293b; border-radius:14px; padding:16px; margin-bottom:18px; display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+        <div>
+          <div style="font-size:10.5px; font-weight:800; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">Адрес Web3 Кошелька:</div>
+          <div style="font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:700; color:#00f5d4;" id="web3WalletAddress">0x7f8a...3b9C</div>
+        </div>
+
+        <div>
+          <div style="font-size:10.5px; font-weight:800; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">Сеть Блокчейна:</div>
+          <div style="font-size:13px; font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:6px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+            <span>Polygon Amoy (80002)</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10.5px; font-weight:800; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">Баланс $ROBO Токенов:</div>
+          <div style="font-family:'JetBrains Mono', monospace; font-size:15px; font-weight:800; color:#fb923c;" id="web3ModalBalance">150 $ROBO</div>
+        </div>
+      </div>
+
+      <!-- Вкладки секций Web3 -->
+      <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid #1e293b; padding-bottom:8px;">
+        <button type="button" class="auth-tab-btn active" id="web3TabCerts" style="font-size:12.5px; padding:6px 14px;">📜 Мои SBT Сертификаты</button>
+        <button type="button" class="auth-tab-btn" id="web3TabVerify" style="font-size:12.5px; padding:6px 14px;">🔍 Публичный Поиск / Верификация</button>
+        <button type="button" class="auth-tab-btn" id="web3TabIoT" style="font-size:12.5px; padding:6px 14px;">🤖 IoT Смарт-Контракты</button>
+      </div>
+
+      <!-- СЕКЦИЯ 1: Список Soulbound NFT Сертификатов -->
+      <div id="web3PaneCerts">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <h4 style="font-size:14px; font-weight:700; color:#ffffff;">Минченные NFT-сертификаты в блокчейне (<span id="web3CertsCount">2</span>)</h4>
+          <button type="button" class="btn-outline-graphite" id="mintNewSbtBtn" style="font-size:11.5px; padding:5px 12px; border-color:#00f5d4; color:#00f5d4;">
+            + Сминтить новый SBT Диплом
+          </button>
+        </div>
+
+        <div id="web3CertsGrid" style="display:flex; flex-direction:column; gap:12px; max-height:260px; overflow-y:auto; padding-right:4px;">
+          <!-- Карточка 1 -->
+          <div style="background:#141f38; border:1px solid #1e293b; border-left:4px solid #00f5d4; border-radius:12px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px; font-weight:800; color:#ffffff; margin-bottom:2px;">📜 Схемотехника Закона Ома &amp; Arduino</div>
+              <div style="font-size:11.5px; color:#94a3b8;">Ученик: Алия Садыкова • Оценка: 100% • Дата: 2026-09-28</div>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:#64748b; margin-top:4px;">TX: 0x7f8a92b3c4d5...8b9c0d1e2f3</div>
+            </div>
+            <a href="https://amoy.polygonscan.com" target="_blank" class="btn-ui" style="font-size:11px; padding:5px 10px; background:#0f172a; color:#00f5d4; border-color:#1e293b;">
+              🔗 PolygonScan
+            </a>
+          </div>
+
+          <!-- Карточка 2 -->
+          <div style="background:#141f38; border:1px solid #1e293b; border-left:4px solid #38bdf8; border-radius:12px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px; font-weight:800; color:#ffffff; margin-bottom:2px;">📜 C++ и Управление Сервоприводами SG90</div>
+              <div style="font-size:11.5px; color:#94a3b8;">Ученик: Алия Садыкова • Оценка: 95% • Дата: 2026-09-29</div>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; color:#64748b; margin-top:4px;">TX: 0x3a4b5c6d7e8f...a4b</div>
+            </div>
+            <a href="https://amoy.polygonscan.com" target="_blank" class="btn-ui" style="font-size:11px; padding:5px 10px; background:#0f172a; color:#38bdf8; border-color:#1e293b;">
+              🔗 PolygonScan
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ 2: Публичный поиска / Верификатор -->
+      <div id="web3PaneVerify" class="hidden">
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">Введите хэш транзакции (TX Hash) или адрес студента:</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="web3VerifyInput" placeholder="например: 0x7f8a92b3c4d5e6f1a2b3c4d5e6f7a8b9c0d1e2f3..." style="flex:1; padding:9px 12px; background:#090d16; border:1px solid #1e293b; border-radius:9px; color:#fff; font-family:'JetBrains Mono', monospace; font-size:12px;" />
+            <button type="button" class="btn-orange-cta" id="web3VerifySearchBtn" style="padding:9px 18px; font-size:12px;">Проверить</button>
+          </div>
+        </div>
+
+        <div id="web3VerifyResult" style="background:#090d16; border:1px solid #1e293b; border-radius:12px; padding:16px; text-align:center; color:#94a3b8; font-size:12.5px;">
+          Введите Хэш или Адрес для онлайн-проверки подлинности диплома в блокчейне.
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ 3: IoT Smart Contracts -->
+      <div id="web3PaneIoT" class="hidden">
+        <h4 style="font-size:13.5px; font-weight:700; color:#ffffff; margin-bottom:8px;">Лог доказательств аппаратной телеметрии (Hardware Proofs):</h4>
+        <div style="display:flex; flex-direction:column; gap:8px; font-family:'JetBrains Mono', monospace; font-size:11.5px; max-height:200px; overflow-y:auto;">
+          <div style="background:#090d16; border:1px solid #1e293b; padding:10px 12px; border-radius:8px; color:#a7f3d0;">
+            [✓ PROOF] Arduino Uno R3 (ID: ARD-882) → Circuit_GND_VCC_OK → Reward: +50 $ROBO
+          </div>
+          <div style="background:#090d16; border:1px solid #1e293b; padding:10px 12px; border-radius:8px; color:#bae6fd;">
+            [✓ PROOF] ESP32 Wi-Fi (ID: ESP-301) → PWM_Sensor_Telemetry_Valid → Reward: +50 $ROBO
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/svg-models.js"></script>
+  <script src="./js/projects.js"></script>
+  <script src="./js/circuit-engine.js"></script>
+  <script src="./js/arduino-interpreter.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/blockchain.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/duo-trainer.js"></script>
+</body>
+</html>
+
